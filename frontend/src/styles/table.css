@@ -1,0 +1,21 @@
+.pagination_container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagination {
+  display: inline-block;
+  list-style: none;
+  display: flex;
+  padding: 0;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.pagination_page {
+  margin: 0 5px;
+}
+
+.pagination_active_page {
+  font-weight: 800;
+}

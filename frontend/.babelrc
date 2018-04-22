@@ -1,0 +1,24 @@
+{
+  "presets": ["latest", "stage-0", "react"],
+  "plugins": [
+    "add-module-exports",
+    "syntax-dynamic-import",
+    "transform-decorators-legacy",
+    "transform-flow-strip-types",
+    ["babel-plugin-transform-builtin-extend", {
+      "globals": ["Error"]
+    }],
+    ["transform-runtime", {
+      "polyfill": false,
+      "regenerator": true
+    }]
+  ],
+  "env": {
+    "targets": {
+      "browsers": [
+        "last 2 versions",
+        "IE >= 9"
+      ]
+    }
+  }
+}

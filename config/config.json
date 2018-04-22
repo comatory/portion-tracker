@@ -1,0 +1,27 @@
+{
+  "development": {
+    "username": "ondrejsynacek",
+    "password": null,
+    "database": "portion_tracker_dev",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 5432,
+    "logging": true
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "portion_tracker_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "staging": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres"
+  }
+}

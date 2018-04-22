@@ -1,0 +1,8 @@
+[33m[nodemon] 1.17.3[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node index.js PT_BACKEND_PROCESS=39896`[39m
+Tue, 01 May 2018 13:27:13 GMT sequelize deprecated The logging-option should be either a function or false. Default: console.log at node_modules/sequelize/lib/sequelize.js:193:13
+Tue, 01 May 2018 13:27:13 GMT sequelize deprecated String based operators are now deprecated. Please use Symbol based operators for better security, read more at http://docs.sequelizejs.com/manual/tutorial/querying.html#operators at node_modules/sequelize/lib/sequelize.js:242:13
+App is listening on port 3000
+Executing (default): SELECT "id", "email", "password", "createdAt", "updatedAt" FROM "Users" AS "User";

@@ -1,0 +1,25 @@
+
+> portion-tracker-frontend@0.1.0 build /Users/ondrejsynacek/Projects/portion-tracker/frontend
+> webpack --config webpack.config.babel.js --env.prod
+
+Hash: 3193af6f7f186d086e46
+Version: webpack 4.6.0
+Time: 917ms
+Built at: 2018-05-01 18:13:44
+          Asset       Size  Chunks             Chunk Names
+    main.min.js    106 KiB       0  [emitted]  main
+main.min.js.map    256 KiB       0  [emitted]  main
+     index.html  176 bytes          [emitted]  
+Entrypoint main = main.min.js main.min.js.map
+[14] ./index.js 431 bytes {0} [built]
+    + 14 hidden modules
+
+WARNING in configuration
+The 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/concepts/mode/
+Child html-webpack-plugin for "index.html":
+     1 asset
+    Entrypoint undefined = index.html
+    [0] external "fs" 42 bytes {0} [optional] [built]
+    [2] ./node_modules/html-webpack-plugin/lib/loader.js!./src/views/index.pug 466 bytes {0} [built]
+        + 1 hidden module

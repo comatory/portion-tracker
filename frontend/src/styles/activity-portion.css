@@ -1,0 +1,9 @@
+.activity_card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.activity_card_delete {
+  padding: 10px 10px 5px 0px;
+}
