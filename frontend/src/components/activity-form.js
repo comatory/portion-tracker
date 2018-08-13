@@ -53,10 +53,23 @@ export default class ActivityForm extends React.PureComponent {
 
   _getFormState() {
     const activityForm = this.context.formStore.getRootValues('portions')
+    const activityFormValid = this._validateActivityForm(activityForm)
 
     return {
-      activityForm
+      activityForm,
+      activityFormValid,
     }
+  }
+  
+  _validateActivityForm(activityForm) {
+    const validations = activityForm.map((portion) => {
+      return (
+        Number.isFinite(portion.get('portionHealthinessId')) &&
+        Number.isFinite(portion.get('portionSizeId'))
+      )
+    })
+
+    return !validations.some(validation => !validation)
   }
 
   _handleEnumerationStoreChange = () => {
@@ -69,6 +82,7 @@ export default class ActivityForm extends React.PureComponent {
 
   _handleAddPortion = () => {
     this.context.formManager.addPortion()
+    this._validateActivityForm(this.state.activityForm)
   }
 
   _handleSubmit = (e) => {
@@ -153,7 +167,7 @@ export default class ActivityForm extends React.PureComponent {
           />
         </div>
         <Button
-          disabled={newActivityRequestProgress}
+          disabled={!this.state.activityFormValid || newActivityRequestProgress}
           raised
           primary
           onClick={this._handleSubmit}
