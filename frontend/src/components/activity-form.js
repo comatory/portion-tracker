@@ -69,6 +69,10 @@ export default class ActivityForm extends React.PureComponent {
       )
     })
 
+    if (!validations.size) {
+      return false
+    }
+
     return !validations.some(validation => !validation)
   }
 
