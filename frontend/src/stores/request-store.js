@@ -8,6 +8,7 @@ export default class ActivityStore extends Store {
 
     this.exportPublicMethods({
       getRequest: this.getRequest,
+      isRequestPending: this.isRequestPending,
     })
 
     this._requestActions = services.requestActions
@@ -37,5 +38,15 @@ export default class ActivityStore extends Store {
 
   getRequest = (requestId) => {
     return this._state.get(requestId) || null
+  }
+
+  isRequestPending = () => {
+    const requestCount = this._state.count()
+
+    const hasErrors = this._state.some((req) => {
+      return Boolean(req.get('error'))
+    })
+
+    return Boolean(requestCount > 0 && !hasErrors) 
   }
 }

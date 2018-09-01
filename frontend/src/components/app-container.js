@@ -15,6 +15,7 @@ import RoutesContainer from './routes-container'
 import Login from './login'
 import UiOverlayContainer from './ui-overlay-container'
 import UserInfoGuard from './user-info-guard'
+import ProgressContainer from './progress-container'
 
 import styles from '../styles/app-container.css'
 
@@ -70,6 +71,7 @@ export default class AppContainer extends React.PureComponent {
     return (
       <div className={styles.app_container}>
         <UiOverlayContainer />
+          <ProgressContainer userInfo={this.state.userInfo} />
           <UserInfoGuard userInfo={this.state.userInfo}>
           <Drawer
             active={this.state.drawerActive}
