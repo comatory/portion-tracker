@@ -81,6 +81,7 @@ export default class Home extends React.PureComponent {
         'entityId': this.props.tableId,
         'limit': 5,
         'sortColumn': 'createdAt',
+        'sortDirection': 'DESC',
       })
 
     return {

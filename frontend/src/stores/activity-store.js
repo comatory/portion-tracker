@@ -2,6 +2,7 @@ import { Map, List } from 'immutable'
 
 import Store from './store'
 import TableIndex from '../indices/table-index';
+import EntitiesUtils from '../utils/entities-utils'
 
 export default class ActivityStore extends Store {
   constructor(services) {
@@ -87,9 +88,13 @@ export default class ActivityStore extends Store {
     const id = filter.getId()
     const indices = this._state.get('tableIndex').getPaginationIndex(id) || List()
 
-    return userActivitiesPortions.filter((portion) => {
+    const filteredActivitiesPortions = userActivitiesPortions.filter((portion) => {
       return indices.includes(portion.get('id'))
     })
+
+    const sortedActivitiesPortions = EntitiesUtils.sortEntities(filteredActivitiesPortions, filter)
+
+    return sortedActivitiesPortions
   }
 
   _getAllUserActivitiesPortions() {

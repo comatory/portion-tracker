@@ -7,6 +7,7 @@ const defaults = {
   page: null,
   pages: null,
   sortColumn: null,
+  sortDirection: null,
   query: OrderedMap(),
 }
 
@@ -19,6 +20,7 @@ export default class TableFilter extends Record(defaults) {
       page: data['page'] || null,
       pages: data['pages'] || null,
       sortColumn: data['sortColumn'] || null,
+      sortDirection: data['sortDir'] || 'DESC',
       query: data['query'] || OrderedMap(),
     }
 

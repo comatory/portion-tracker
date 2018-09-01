@@ -1,4 +1,5 @@
 import { List, Record } from 'immutable'
+import moment from 'moment'
 
 const defaults = {
   id: null,
@@ -13,8 +14,8 @@ export default class Portion extends Record(defaults) {
   static fromData(data = {}) {
     let cleanData = {
       id: data['id'] || null,
-      createdAt: data['createdAt'] || null,
-      updatedAt: data['updatedAt'] || null,
+      createdAt: data['createdAt'] ? moment(data['createdAt']) : null,
+      updatedAt: data['updatedAt'] ? moment(data['updatedAt']) : null,
       note: data['note'] || '',
       portionHealthinessId: data['PortionHealthinessId'] ? Number.parseInt(data['PortionHealthinessId']) : null,
       portionSizeId: data['PortionSizeId'] ? Number.parseInt(data['PortionSizeId']) : null,

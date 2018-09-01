@@ -40,6 +40,7 @@
   "dependencies": {
     "@adonisjs/fold": "^4.0.8",
     "alt": "^0.18.6",
+    "classnames": "^2.2.6",
     "hat": "0.0.3",
     "immutable": "^3.8.2",
     "moment": "^2.22.2",

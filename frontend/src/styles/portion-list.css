@@ -1,3 +1,22 @@
 .portion_list {
   overflow-y: auto;
 }
+
+.portion_list_active_header {
+  font-weight: 800;
+}
+
+.portion_list_arrow_header {
+  position: relative;
+  float: right;
+}
+
+.portion_list_arrow {
+  position: absolute;
+}
+
+.portion_list_asc_header {
+}
+
+.portion_list_desc_header {
+}

@@ -166,6 +166,7 @@ export default class ApiManager extends Manager {
     const limit = filter.get('limit') 
     const page = options.page || 1
     const sortColumn = filter.get('sortColumn')
+    const sortDirection = filter.get('sortDirection')
 
     if (!userId) {
       return
@@ -173,11 +174,11 @@ export default class ApiManager extends Manager {
 
     this._requestManager.get(
       API_IDS.ACTIVITY_IDS.ACTIVITY_IDS_GET_USER_ACTIVITIES_PORTIONS,
-      `${this.baseUrl}/api/users/${userId}/portions?page=${page}&limit=${limit}&sortBy=${sortColumn}`
+      `${this.baseUrl}/api/users/${userId}/portions?page=${page}&limit=${limit}&sortBy=${sortColumn}&sortDir=${sortDirection}`
     )
       .then((response) => {
         const result = response.body.result || response.body
-        const { page, pages } = response.body
+        const { page, pages, sortBy, sortDir } = response.body
         const userActivitesPortions = result.length > 0 ? 
         List(result.map((r) => {
           return Portion.fromData(r)
@@ -185,6 +186,8 @@ export default class ApiManager extends Manager {
         Portion.fromData(result)
         const updatedFilter = filter.set('page', page)
                                     .set('pages', pages)
+                                    .set('sortColumn', sortBy)
+                                    .set('sortDirection', sortDir)
         this._uiActions.setTableFilter(updatedFilter)
         this._activityActions.setUserActivitiesPortions(userActivitesPortions, updatedFilter.getId())
       })

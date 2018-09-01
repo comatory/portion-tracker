@@ -114,7 +114,7 @@ router.get('/:id/activities', async (req, res, next) => {
 
 router.get('/:id/portions', async (req, res, next) => {
   try {
-    const { offset, limit, sortBy } = ApiUtils.getPagination(req)
+    const { offset, limit, sortBy, sortDir } = ApiUtils.getPagination(req)
     const user = await User.findById(req.params.id)
     const userActivitesIds = await Activity
       .findAll({
@@ -146,7 +146,7 @@ router.get('/:id/portions', async (req, res, next) => {
           [Op.in]: activityPortionIds,
         },
       },
-      order: [[ sortBy, 'DESC' ]],
+      order: [[ sortBy, sortDir ]],
       offset,
       limit,
     })
@@ -156,6 +156,7 @@ router.get('/:id/portions', async (req, res, next) => {
       offset,
       limit,
       sortBy,
+      sortDir,
     })
   } catch (error) {
     next(error)

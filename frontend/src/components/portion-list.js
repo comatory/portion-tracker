@@ -6,14 +6,38 @@ import {
   TableCell,
   TableRow,
 } from 'react-toolbox/lib/table'
-import { List } from 'immutable'
+import { FontIcon } from 'react-toolbox/lib'
+import { List, Map } from 'immutable'
 import ReactPaginate from 'react-paginate'
-import moment from 'moment'
+import classNames from 'classnames'
 
 import TableUtils from '../utils/table-utils'
 
 import tableStyles from '../styles/table.css'
 import styles from '../styles/portion-list.css'
+
+const TABLE_HEADERS = [
+  {
+    name: 'createdAt',
+    label: 'Created at',
+  },
+  {
+    name: 'healthiness',
+    label: 'Healthiness',
+  },
+  {
+    name: 'size',
+    label: 'Size',
+  },
+  {
+    name: 'calories',
+    label: 'Calories',
+  },
+  {
+    name: 'note',
+    label: 'Note',
+  },
+]
 
 export default class PortionList extends React.PureComponent {
   static contextTypes = {
@@ -48,16 +72,44 @@ export default class PortionList extends React.PureComponent {
     }
   }
 
+  _renderTableHeader(name, label) {
+    const sortColumn = this.props.filter.get('sortColumn')
+    const sortDirection = this.props.filter.get('sortDirection')
+
+    const isActive = Boolean(sortColumn === name)
+    const isAsc = Boolean(isActive && sortDirection === 'ASC')
+    const isDesc = Boolean(isActive && sortDirection === 'DESC')
+
+    return (
+      <TableCell
+        className={classNames({
+          [styles.portion_list_active_header]: isActive,
+          [styles.portion_list_asc_header]: isAsc,
+          [styles.portion_list_desc_header]: isDesc,
+        })}
+        key={`portion-list-table-head-cell-${name}`}
+      >
+        { label }
+        {isActive &&
+          <div className={styles.portion_list_arrow_header}>
+            <FontIcon
+              value={isDesc ? 'arrow_drop_down' : 'arrow_drop_up'}
+              className={styles.portion_list_arrow}
+            />
+          </div>
+        }
+      </TableCell>
+    )
+  }
+
   render() {
     return (
       <div className={styles.portion_list}>
         <Table>
         <TableHead>
-          <TableCell>Created at</TableCell>
-          <TableCell>Healthiness</TableCell>
-          <TableCell>Size</TableCell>
-          <TableCell>Calories</TableCell>
-          <TableCell>Note</TableCell>
+          { TABLE_HEADERS.map((header) => {
+            return this._renderTableHeader(header.name, header.label)
+          })}
         </TableHead>
         {this.props.portions.map((portion, index) => {
           return (
@@ -65,7 +117,7 @@ export default class PortionList extends React.PureComponent {
               key={`portion-list-row-${portion.get('id')}`}
             >
               <TableCell>
-                {String(moment(portion.get('createdAt')).format('DD.MM.YYYY HH:mm'))}
+                {String(portion.get('createdAt').format('DD.MM.YYYY HH:mm'))}
               </TableCell>
               <TableCell>
                 {TableUtils.mapIdToName(

@@ -22,6 +22,7 @@ class ApiUtils {
         limit: options.limit || DEFAULT_LIMIT,
         offset: options.offset || DEFAULT_OFFSET,
         sortBy: options.sortBy,
+        sortDir: options.sortDir,
       })
     }
 
@@ -38,11 +39,13 @@ class ApiUtils {
     const limit = pagination.limit || DEFAULT_LIMIT
     const offset = ((pagination.offset || pagination.page || DEFAULT_OFFSET) - 1) * limit
     const sortBy = request.body.sortBy || request.query.sortBy || {}
+    const sortDir = request.body.sortDir || request.query.sortDir || 'DESC'
 
     return {
       offset,
       limit,
       sortBy,
+      sortDir,
     }
   }
 
@@ -57,6 +60,7 @@ class ApiUtils {
       cleanPagination = {
         ...cleanPagination,
         sortBy: options.sortBy,
+        sortDir: options.sortDir,
       }
     }
 

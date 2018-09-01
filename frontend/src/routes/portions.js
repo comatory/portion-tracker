@@ -73,6 +73,7 @@ export default class Activities extends React.PureComponent {
         'entityId': this.props.tableId,
         'limit': 10,
         'sortColumn': 'createdAt',
+        'sortDirection': 'DESC',
       })
 
     return {
