@@ -74,14 +74,6 @@ class ApiUtils {
       response.status(403).json({ message: 'not authorized' })
     }
   }
-
-  static authorizeViaCookie(request, response, next) {
-    if (request.cookies['portion-tracker']) {
-      next()
-    } else {
-      response.status(403).json({ message: 'not authorized' })
-    }
-  }
 }
 
 module.exports = ApiUtils

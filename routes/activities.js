@@ -1,10 +1,17 @@
 const { Router } = require('express')
 const { Op } = require('sequelize')
-const { Activity, Portion, ActivityPortion } = require('../models')
+const { Activity, Portion, ActivityPortion, User } = require('../models')
 const ApiUtils = require('../utils/api-utils')
+const DbUtils = require('../utils/db-utils')
+const {
+  authorizeActivities,
+  authorizeActivity,
+  // authorizeActivityPortions,
+} = require('./authorization/activities.middleware')
 
 const router = Router()
 
+router.use('/', authorizeActivities)
 router.post('/', async (req, res, next) => {
   const { datetime, note, Portions, UserId } = req.body
 
@@ -33,13 +40,21 @@ router.post('/', async (req, res, next) => {
 
 router.get('/', async (req, res, next) => {
   try {
-    const activities = await Activity.findAll()
+    const isAdmin = await DbUtils.isUserAdmin(req, User)
+    const activities = isAdmin ?
+      await Activity.findAll() :
+      await Activity.findAll({
+        where: {
+          UserId: req.session.user.id,
+        },
+      })
     ApiUtils.validResponse(activities, res)
   } catch (error) {
     next(error)
   }
 })
 
+router.use('/:id', authorizeActivity)
 router.get('/:id', async (req, res, next) => {
   const { id } = req.params
   const activity = await Activity.findById(id, { include: Portion })
@@ -51,6 +66,7 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+router.use('/:id/portions', authorizeActivity)
 router.get('/:id/portions', async (req, res, next) => {
   const { id } = req.params
   try {

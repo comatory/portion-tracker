@@ -1,9 +1,14 @@
 const { Router } = require('express')
 const { Role } = require('../models')
 const ApiUtils = require('../utils/api-utils')
+const {
+  authorizeRoles,
+  authorizeRole,
+} = require('./authorization/roles.middleware')
 
 const router = Router()
 
+router.use('/', authorizeRoles)
 router.get('/', async (req, res, next) => {
   try {
     const roles = await Role.findAll()

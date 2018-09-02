@@ -109,6 +109,7 @@ app.post('/login', async (req, res, next) => {
 app.post('/logout', (req, res, next) => {
   try {
     req.session.destroy()
+    res.clearCookie('portion-tracker')
     ApiUtils.validResponse({ message: 'ok' }, res)
   } catch (error) {
     next(error)

@@ -3,12 +3,22 @@ const { Op } = require('sequelize')
 
 const { User, Role, Activity, Portion, ActivityPortion } = require('../models')
 const ApiUtils = require('../utils/api-utils')
+const DbUtils = require('../utils/db-utils')
+
+const {
+  authorizeUsers,
+  authorizeUser,
+  authorizeUserActivities,
+  authorizeUserPortions,
+} = require('./authorization/users.middleware')
 
 const router = Router()
 
+router.use('/', authorizeUsers)
 router.get('/', async (req, res, next) => {
   try {
-    const users = await User.findAll()
+    const isAdmin = await DbUtils.isUserAdmin(req, User)
+    const users = isAdmin ? await User.findAll() : await User.findById(req.session.user.id)
     ApiUtils.validResponse(users, res)
   } catch (error) {
     next(error)
@@ -39,13 +49,15 @@ router.post('/', async (req, res, next) => {
 
 router.get('/current_user', async (req, res, next) => {
   try {
-    const user = req.session.user
+    const userId = req.session.user.id
+    const user = await User.findById(userId, { include: [ Role ] })
     ApiUtils.validResponse(user, res)
   } catch (error) {
     next(error)
   }
 })
 
+router.use('/:id', authorizeUser)
 router.get('/:id', async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id, {
@@ -61,10 +73,14 @@ router.put('/:id', async (req, res, next) => {
   const { email, password, RoleIds } = req.body
   try {
     const user = await User.findById(req.params.id)
-    await user.update({
-      email,
-      password,
-    })
+    let update = {}
+    if (email) {
+      update = { ...update, email }
+    }
+    if (password) {
+      update = { ...update, password }
+    }
+    await user.update(update)
 
     if (RoleIds && RoleIds.length > 0) {
       await user.setRoles(RoleIds)
@@ -87,6 +103,7 @@ router.delete('/:id', async (req, res, next) => {
   }
 })
 
+router.use('/:id/activities', authorizeUserActivities)
 router.get('/:id/activities', async (req, res, next) => {
   try {
     const { offset, limit } = ApiUtils.getPagination(req)
@@ -112,6 +129,7 @@ router.get('/:id/activities', async (req, res, next) => {
   }
 })
 
+router.use('/:id/portions', authorizeUserPortions)
 router.get('/:id/portions', async (req, res, next) => {
   try {
     const { offset, limit, sortBy, sortDir } = ApiUtils.getPagination(req)
