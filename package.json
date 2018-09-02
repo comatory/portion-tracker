@@ -21,6 +21,7 @@
     "sequelize": "node_modules/.bin/sequelize",
     "start": "NODE_ENV=production node index.js",
     "start:dev": "NODE_ENV=development nodemon --exec 'node -r dotenv/config' index.js",
+    "start:dev:debug": "NODE_ENV=development nodemon --exec 'node --inspect=12345 -r dotenv/config' index.js",
     "test": "jest ."
   },
   "keywords": [

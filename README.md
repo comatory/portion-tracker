@@ -57,6 +57,9 @@ Alternatively, you can just install & launch apps from within their respective d
 
 For backend, run the app in dev mode: `npm run start:dev`. For frontend, go to `frontend/` and launch `npm run start`.
 
+### Debugging development server
+
+There is a script to run back end server with `--inspect` option. It'll run `nodemon` on port `12345`. You can attach to this port in _Visual Studio Code_ using the configuration `.vscode/launch.json`.
 
 # Deployment
 
