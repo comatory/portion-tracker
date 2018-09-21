@@ -11,13 +11,20 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        id: 2,
+        email: 'user@portiontracker.dev',
+        passwordDigest: password,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ])
   },
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete('User', {
       where: {
-        email: 'admin@portiontracker.dev',
+        email: [ 'admin@portiontracker.dev', 'user@portiontracker.dev' ],
       },
     })
   },

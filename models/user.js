@@ -78,6 +78,13 @@ module.exports = (sequelize, DataTypes) => {
     return false
   }
 
+  User.prototype.isAdmin = async function() {
+    const adminRole = await sequelize.models.Role.findOne({ name: 'admin' })
+    const hasAdminRole = await this.hasRoles(adminRole)
+
+    return hasAdminRole
+  }
+
   User.associate = function(models) {
     User.belongsToMany(models.Role, { through: 'UserRole' })
     User.hasMany(models.Activity)

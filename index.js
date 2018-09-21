@@ -41,7 +41,7 @@ const roles = require('./routes/roles')
 const portionHealthinesses = require('./routes/portion-healthinesses')
 const portionSizes = require('./routes/portion-sizes')
 
-const { User } = require('./models')
+const { User, Role } = require('./models')
 
 const ApiUtils = require('./utils/api-utils')
 
@@ -87,6 +87,7 @@ app.post('/login', async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: { email },
+      include: [ Role ],
     })
 
     if (user && user.authenticate(password)) {
@@ -108,6 +109,7 @@ app.post('/login', async (req, res, next) => {
 app.post('/logout', (req, res, next) => {
   try {
     req.session.destroy()
+    res.clearCookie('portion-tracker')
     ApiUtils.validResponse({ message: 'ok' }, res)
   } catch (error) {
     next(error)

@@ -1,0 +1,22 @@
+{
+  "users": {
+    "admin": [ "getAll", "createAll", "deleteAll", "updateAll", "activitiesAll", "portionsAll" ],
+    "user": [ "get", "update", "activities", "portions" ]
+  },
+  "roles": {
+    "admin": [ "getAll", "createAll", "deleteAll", "updateAll" ],
+    "user": []
+  },
+  "portionSizes": {
+    "admin": [ "getAll" ],
+    "user": [ "get" ]
+  },
+  "portionHealthinesses": {
+    "admin": [ "getAll" ],
+    "user": [ "get" ]
+  },
+  "activities": {
+    "admin": [ "getAll", "createAll", "activityPortionsAll" ],
+    "user": [ "get", "create", "activityPortions" ]
+  }
+}
