@@ -6,7 +6,6 @@ const DbUtils = require('../utils/db-utils')
 const {
   authorizeActivities,
   authorizeActivity,
-  // authorizeActivityPortions,
 } = require('./authorization/activities.middleware')
 
 const router = Router()

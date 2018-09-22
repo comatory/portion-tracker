@@ -40,7 +40,7 @@ export default class UiStore extends Store {
     })
 
     tableFilters = index === -1 ? tableFilters.push(filter) : tableFilters.set(index, filter)
-    
+
     this._state = this._state.set('tableFilters', tableFilters)
   }
 
@@ -56,5 +56,4 @@ export default class UiStore extends Store {
       return tableFilter.get('id') === id
     })
   }
-
 }

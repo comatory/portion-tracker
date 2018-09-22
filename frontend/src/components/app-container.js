@@ -4,15 +4,14 @@ import {
   AppBar,
   Drawer,
   Layout,
-  Navigation
+  Navigation,
 } from 'react-toolbox/lib'
 import {
   HashRouter as Router,
-  Link
+  Link,
 } from 'react-router-dom'
 
 import RoutesContainer from './routes-container'
-import Login from './login'
 import UiOverlayContainer from './ui-overlay-container'
 import UserInfoGuard from './user-info-guard'
 import ProgressContainer from './progress-container'
@@ -25,7 +24,7 @@ export default class AppContainer extends React.PureComponent {
     userStore: PropTypes.object.isRequired,
   }
 
-  state = this._getState() 
+  state = this._getState()
 
   _getState() {
     return {
@@ -71,8 +70,8 @@ export default class AppContainer extends React.PureComponent {
     return (
       <div className={styles.app_container}>
         <UiOverlayContainer />
-          <ProgressContainer userInfo={this.state.userInfo} />
-          <UserInfoGuard userInfo={this.state.userInfo}>
+        <ProgressContainer userInfo={this.state.userInfo} />
+        <UserInfoGuard userInfo={this.state.userInfo}>
           <Drawer
             active={this.state.drawerActive}
             onOverlayClick={this._triggerDrawer}
@@ -96,11 +95,11 @@ export default class AppContainer extends React.PureComponent {
             onLeftIconClick={this._triggerDrawer}
           >
             <Navigation type='horizontal'>
-                <Router>
-                  <div className={styles.nav_links}>
-                    <Link to='/' className={styles.nav_link}>Home</Link>
-                    <Link to="/portions" className={styles.nav_link}>Portions</Link>
-                  </div>
+              <Router>
+                <div className={styles.nav_links}>
+                  <Link to='/' className={styles.nav_link}>Home</Link>
+                  <Link to="/portions" className={styles.nav_link}>Portions</Link>
+                </div>
               </Router>
             </Navigation>
           </AppBar>

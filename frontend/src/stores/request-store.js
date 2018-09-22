@@ -1,5 +1,3 @@
-import { Map } from 'immutable'
-
 import Store from './store'
 
 export default class ActivityStore extends Store {
@@ -47,6 +45,6 @@ export default class ActivityStore extends Store {
       return Boolean(req.get('error'))
     })
 
-    return Boolean(requestCount > 0 && !hasErrors) 
+    return Boolean(requestCount > 0 && !hasErrors)
   }
 }

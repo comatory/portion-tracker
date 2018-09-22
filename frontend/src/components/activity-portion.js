@@ -55,7 +55,7 @@ export default class ActivityPortion extends React.PureComponent {
             label='Size'
             onChange={this._handlePortionSizeChange}
             value={Number.isFinite(this.props.portionSizeId) ? this.props.portionSizeId : ''}
-            source={this.props.sizeOptions} 
+            source={this.props.sizeOptions}
             // TODO: This below is hack: https://github.com/react-toolbox/react-toolbox/issues/1870
             key={`dropdown-size-${this.props.id}-${this.props.portionSizeId}`}
           />

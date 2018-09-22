@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const { PortionSize } = require('../models')
 const ApiUtils = require('../utils/api-utils')
-const { authorizePortionSizes } = require('./authorization/portion-sizes.middleware') 
+const { authorizePortionSizes } = require('./authorization/portion-sizes.middleware')
 
 const router = Router()
 

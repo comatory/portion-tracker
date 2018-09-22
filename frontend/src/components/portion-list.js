@@ -7,7 +7,6 @@ import {
   TableRow,
 } from 'react-toolbox/lib/table'
 import { FontIcon } from 'react-toolbox/lib'
-import { List, Map } from 'immutable'
 import ReactPaginate from 'react-paginate'
 import classNames from 'classnames'
 
@@ -106,40 +105,40 @@ export default class PortionList extends React.PureComponent {
     return (
       <div className={styles.portion_list}>
         <Table>
-        <TableHead>
-          { TABLE_HEADERS.map((header) => {
-            return this._renderTableHeader(header.name, header.label)
+          <TableHead>
+            { TABLE_HEADERS.map((header) => {
+              return this._renderTableHeader(header.name, header.label)
+            })}
+          </TableHead>
+          {this.props.portions.map((portion, index) => {
+            return (
+              <TableRow
+                key={`portion-list-row-${portion.get('id')}`}
+              >
+                <TableCell>
+                  {String(portion.get('createdAt').format('DD.MM.YYYY HH:mm'))}
+                </TableCell>
+                <TableCell>
+                  {TableUtils.mapIdToName(
+                    this.state.portionHealthinesses,
+                    portion.get('portionHealthinessId')
+                  )}
+                </TableCell>
+                <TableCell>
+                  {TableUtils.mapIdToName(
+                    this.state.portionSizes,
+                    portion.get('portionSizeId')
+                  )}
+                </TableCell>
+                <TableCell numeric>
+                  {portion.get('calories')}
+                </TableCell>
+                <TableCell>
+                  {portion.get('note')}
+                </TableCell>
+              </TableRow>
+            )
           })}
-        </TableHead>
-        {this.props.portions.map((portion, index) => {
-          return (
-            <TableRow
-              key={`portion-list-row-${portion.get('id')}`}
-            >
-              <TableCell>
-                {String(portion.get('createdAt').format('DD.MM.YYYY HH:mm'))}
-              </TableCell>
-              <TableCell>
-                {TableUtils.mapIdToName(
-                  this.state.portionHealthinesses,
-                  portion.get('portionHealthinessId')
-                )}
-              </TableCell>
-              <TableCell>
-                {TableUtils.mapIdToName(
-                  this.state.portionSizes,
-                  portion.get('portionSizeId')
-                )}
-              </TableCell>
-              <TableCell numeric>
-                {portion.get('calories')}
-              </TableCell>
-              <TableCell>
-                {portion.get('note')}
-              </TableCell>
-            </TableRow>
-          )
-        })}
         </Table>
         {this.props.showPagination &&
           <div className={tableStyles.pagination_container}>

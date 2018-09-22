@@ -22,7 +22,6 @@ export default class ProgressContainer extends React.PureComponent {
     this.context.requestStore.unlisten(this._handleRequestStoreChange)
   }
 
-
   _handleRequestStoreChange = () => {
     this.setState(this._getRequestState())
   }
