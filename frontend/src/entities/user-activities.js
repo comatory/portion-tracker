@@ -7,7 +7,6 @@ const defaults = {
 }
 
 export default class UserActivities extends Record(defaults) {
-
   static fromData(data = {}) {
     let cleanData = {
     }

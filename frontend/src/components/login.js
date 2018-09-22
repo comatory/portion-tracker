@@ -5,7 +5,6 @@ import Input from 'react-toolbox/lib/input'
 
 import formStyles from '../styles/form.css'
 
-
 export default class Login extends React.PureComponent {
   state = {
     email: '',
@@ -17,11 +16,11 @@ export default class Login extends React.PureComponent {
   }
 
   _handleEmailChange = (value) => {
-    this.setState({ email: value})
+    this.setState({ email: value })
   }
 
   _handlePasswordChange = (value) => {
-    this.setState({ password: value})
+    this.setState({ password: value })
   }
 
   _handleLoginLink = (e) => {
@@ -33,7 +32,7 @@ export default class Login extends React.PureComponent {
       this.props.afterLoginRequest()
     }
   }
-  
+
   render() {
     return (
       <div className='login'>

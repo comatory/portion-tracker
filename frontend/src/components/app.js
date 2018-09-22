@@ -1,17 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Login from './login'
-
 import services from '../services'
-import stores from '../stores'
-
 import AppContainer from './app-container'
 
 import '../styles/app.css'
 
 export default class App extends React.PureComponent {
-
   static childContextTypes = {
     alt: PropTypes.object.isRequired,
 
@@ -44,9 +39,8 @@ export default class App extends React.PureComponent {
       ...services.actions,
       ...services.stores,
       ...services.managers,
-    } 
+    }
   }
-
 
   componentWillUnmount() {
     this.props.onUnmount()

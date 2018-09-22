@@ -12,7 +12,6 @@ export default class FormStore extends Store {
       getRootValues: this.getRootValues,
     })
 
-
     this._state = Map({
       portions: List([
         Portion.fromData({
@@ -68,8 +67,8 @@ export default class FormStore extends Store {
     })
 
     const index = portions.findIndex((portion) => {
-      return portion === portionToUpdate 
-    }) 
+      return portion === portionToUpdate
+    })
 
     portions = portions.set(index, value)
 
@@ -78,8 +77,7 @@ export default class FormStore extends Store {
 
   handleClearPortions = () => {
     this._state = this._state.set('portions', List([
-      new Portion() 
+      new Portion(),
     ]))
   }
-  
 }

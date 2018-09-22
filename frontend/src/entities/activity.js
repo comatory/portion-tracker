@@ -10,7 +10,6 @@ const defaults = {
 }
 
 export default class Activity extends Record(defaults) {
-
   static fromData(data = {}) {
     let cleanData = {
       id: data['id'] || null,
@@ -19,7 +18,7 @@ export default class Activity extends Record(defaults) {
     }
 
     if (data['Portions'] && data['Portions'].length > 0) {
-      let portions = List() 
+      let portions = List()
       data['Portions'].forEach((portion) => {
         portions = portions.push(Portion.fromData(portion))
       })

@@ -1,7 +1,7 @@
 import { Map, List } from 'immutable'
 
 import Store from './store'
-import TableIndex from '../indices/table-index';
+import TableIndex from '../indices/table-index'
 import EntitiesUtils from '../utils/entities-utils'
 
 export default class ActivityStore extends Store {

@@ -32,6 +32,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
+router.use('/:id', authorizeRole)
 router.get('/:id', async (req, res, next) => {
   try {
     const role = await Role.findById(req.params.id)

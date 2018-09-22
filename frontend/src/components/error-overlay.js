@@ -9,7 +9,7 @@ import Login from '../components/login'
 
 export default class ErrorOverlay extends React.PureComponent {
   static contextTypes = {
-    requestManager: PropTypes.object.isRequired, 
+    requestManager: PropTypes.object.isRequired,
     userStore: PropTypes.object.isRequired,
     uiManager: PropTypes.object.isRequired,
   }
@@ -32,7 +32,7 @@ export default class ErrorOverlay extends React.PureComponent {
       userInfo,
     }
   }
-  
+
   _handleUserStoreChange = () => {
     this.setState(this._getState())
   }

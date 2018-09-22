@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 export default class UserInfoGuard extends React.PureComponent {
-
   static contextTypes = {
     apiManager: PropTypes.object.isRequired,
   }

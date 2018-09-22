@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Map, List } from 'immutable'
 
 import PortionList from './portion-list'
 
@@ -26,7 +25,6 @@ export default class PortionContainer extends React.PureComponent {
   _handleActivityStoreChange = () => {
     this.setState(this._getPortionState())
   }
-
 
   _getPortionState() {
     const userActivitesPortions = this.context.activityStore.getUserActivitiesPortions(this.props.filter)

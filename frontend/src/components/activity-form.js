@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 
 import { Button } from 'react-toolbox/lib/button'
 
- import styles from '../styles/activity-form.css'
- import ActivityPortion from './activity-portion'
+import styles from '../styles/activity-form.css'
+import ActivityPortion from './activity-portion'
 
 export default class ActivityForm extends React.PureComponent {
   static contextTypes = {
@@ -21,11 +21,13 @@ export default class ActivityForm extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.newActivityRequest &&
-      !nextProps.newActivityRequest
-      && !nextProps.newActivityRequestError) {
-        this.context.formManager.clearActivityForm()
-        this.props.onSubmitCallback()
+    if (
+      this.props.newActivityRequest &&
+      !nextProps.newActivityRequest &&
+      !nextProps.newActivityRequestError
+    ) {
+      this.context.formManager.clearActivityForm()
+      this.props.onSubmitCallback()
     }
   }
 
@@ -60,7 +62,7 @@ export default class ActivityForm extends React.PureComponent {
       activityFormValid,
     }
   }
-  
+
   _validateActivityForm(activityForm) {
     const validations = activityForm.map((portion) => {
       return (
@@ -99,7 +101,7 @@ export default class ActivityForm extends React.PureComponent {
     this.context.formManager.submitActivityForm(
       this.state.activityForm,
       this.props.userInfo
-    ) 
+    )
   }
 
   _handleFormChange = (id, attribute, value) => {
@@ -111,7 +113,7 @@ export default class ActivityForm extends React.PureComponent {
       portion = portion.set(attribute, value)
       this.context.formManager.updatePortion(id, portion)
     }
-  } 
+  }
 
   _handleDeletePortionRequest = (id) => {
     this.context.formManager.removePortion(id)
@@ -157,7 +159,7 @@ export default class ActivityForm extends React.PureComponent {
                   note={portion.get('note')}
                 />
               </div>
-            ) 
+            )
           })}
         </div>
         <div className={styles.activity_container_divider}>

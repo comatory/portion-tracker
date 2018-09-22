@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import PortionContainer from '../components/portion-container'
 import { ACTIVITY_IDS_REQUESTS } from '../actions/constants'
-import { TableFilter } from '../entities';
+import { TableFilter } from '../entities'
 
 export default class Activities extends React.PureComponent {
   static contextTypes = {
@@ -16,7 +16,7 @@ export default class Activities extends React.PureComponent {
 
   static defaultProps = {
     tableId: 'portions',
-    filterId: 'portions'
+    filterId: 'portions',
   }
 
   componentWillMount() {
@@ -52,7 +52,7 @@ export default class Activities extends React.PureComponent {
   _getState() {
     return {
       ...this._getUserActivitiesPortionRequest(),
-      ...this._getFilter()
+      ...this._getFilter(),
     }
   }
 
@@ -62,13 +62,13 @@ export default class Activities extends React.PureComponent {
     )
 
     return {
-      userActivitiesPortionRequest
+      userActivitiesPortionRequest,
     }
   }
 
   _getFilter() {
-    const filter = this.context.uiStore.getTableFilter(this.props.filterId)
-      || new TableFilter({
+    const filter = this.context.uiStore.getTableFilter(this.props.filterId) ||
+      new TableFilter({
         'id': this.props.filterId,
         'entityId': this.props.tableId,
         'limit': 10,

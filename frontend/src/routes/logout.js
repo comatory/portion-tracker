@@ -62,7 +62,7 @@ export default class Logout extends React.PureComponent {
       <div>
         {this.state.logoutReq && !this.state.logoutReq.get('error') && <p>Logging out... </p>}
         {!this.state.logoutReq && <p>You have been succesfully logged out</p>}
-        {this.state.loggedOut && 
+        {this.state.loggedOut &&
           <Router>
             <Redirect
               to={{

@@ -1,6 +1,6 @@
 import Manager from './manager'
 import ApiUtils from '../utils/api-utils'
-import Request from '../entities/request' 
+import Request from '../entities/request'
 
 export default class RequestManager extends Manager {
   constructor(services) {

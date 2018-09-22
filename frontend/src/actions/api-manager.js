@@ -9,11 +9,10 @@ import {
   Portion,
   TableFilter,
 } from '../entities'
-import ActivityContainer from '../components/portion-container';
 import { API_IDS } from './constants'
 
 export default class ApiManager extends Manager {
-  baseUrl = null 
+  baseUrl = null
   userInfo = null
 
   constructor(services) {
@@ -75,9 +74,8 @@ export default class ApiManager extends Manager {
 
     Promise.all([
       this.getPortionHealthinesses(userId),
-      this.getPortionSizes(userId)
+      this.getPortionSizes(userId),
     ])
-
   }
 
   getPortionHealthinesses(userId) {
@@ -90,7 +88,7 @@ export default class ApiManager extends Manager {
           response.body.map((enumeration) => {
             return Enumeration.fromData(enumeration)
           })
-        ) 
+        )
         this._enumerationActions.setEnumeration(
           'portion-healthinesses',
           enumerations
@@ -112,7 +110,7 @@ export default class ApiManager extends Manager {
           response.body.map((enumeration) => {
             return Enumeration.fromData(enumeration)
           })
-        ) 
+        )
         this._enumerationActions.setEnumeration(
           'portion-sizes',
           enumerations
@@ -153,7 +151,6 @@ export default class ApiManager extends Manager {
         const result = response.body.result || response.body
         const userActivites = UserActivities.fromData(result)
         this._activityActions.setUserActivities(userActivites)
-
       })
       .catch((error) => {
         console.log(error)
@@ -162,8 +159,8 @@ export default class ApiManager extends Manager {
 
   getUserActivitiesPortions(options) {
     const userId = this.userInfo ? this.userInfo.get('id') : null
-    const filter = options.filter || new TableFilter() 
-    const limit = filter.get('limit') 
+    const filter = options.filter || new TableFilter()
+    const limit = filter.get('limit')
     const page = options.page || 1
     const sortColumn = filter.get('sortColumn')
     const sortDirection = filter.get('sortDirection')
@@ -179,15 +176,19 @@ export default class ApiManager extends Manager {
       .then((response) => {
         const result = response.body.result || response.body
         const { page, pages, sortBy, sortDir } = response.body
-        const userActivitesPortions = result.length > 0 ? 
-        List(result.map((r) => {
-          return Portion.fromData(r)
-        })) :
-        Portion.fromData(result)
-        const updatedFilter = filter.set('page', page)
-                                    .set('pages', pages)
-                                    .set('sortColumn', sortBy)
-                                    .set('sortDirection', sortDir)
+        const userActivitesPortions = result.length > 0 ?
+          List(result.map((r) => {
+            return Portion.fromData(r)
+          })) :
+          Portion.fromData(result)
+
+        const updatedFilter = filter.merge({
+          'page': page,
+          'pages': pages,
+          'sortColumn': sortBy,
+          'sortDirection': sortDir,
+        })
+
         this._uiActions.setTableFilter(updatedFilter)
         this._activityActions.setUserActivitiesPortions(userActivitesPortions, updatedFilter.getId())
       })
@@ -209,8 +210,7 @@ export default class ApiManager extends Manager {
       }
     ).then((response) => {
       console.log(response)
-    })
-    .catch((error) => {
+    }).catch((error) => {
       console.log(error)
     })
   }

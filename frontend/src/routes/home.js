@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import ActivityForm from '../components/activity-form'
 import PortionContainer from '../components/portion-container'
 import { ACTIVITY_IDS_REQUESTS } from '../actions/constants'
-import { TableFilter } from '../entities';
+import { TableFilter } from '../entities'
 
 export default class Home extends React.PureComponent {
   static contextTypes = {
@@ -17,7 +17,7 @@ export default class Home extends React.PureComponent {
 
   static defaultProps = {
     tableId: 'portions',
-    filterId: 'recent-portions'
+    filterId: 'recent-portions',
   }
 
   componentWillMount() {
@@ -60,7 +60,7 @@ export default class Home extends React.PureComponent {
   _getState() {
     return {
       ...this._getUserActivitiesPortionRequest(),
-      ...this._getFilter()
+      ...this._getFilter(),
     }
   }
 
@@ -70,13 +70,13 @@ export default class Home extends React.PureComponent {
     )
 
     return {
-      userActivitiesPortionRequest
+      userActivitiesPortionRequest,
     }
   }
 
   _getFilter() {
-    const filter = this.context.uiStore.getTableFilter(this.props.filterId)
-      || new TableFilter({
+    const filter = this.context.uiStore.getTableFilter(this.props.filterId) ||
+      new TableFilter({
         'id': this.props.filterId,
         'entityId': this.props.tableId,
         'limit': 5,
@@ -88,7 +88,7 @@ export default class Home extends React.PureComponent {
       filter,
     }
   }
-    
+
   _getCreateNewActivityRequest() {
     const newActivityRequest = this.context.requestStore.getRequest(
       ACTIVITY_IDS_REQUESTS.ACTIVITY_IDS_CREATE_NEW_ACTIVITY

@@ -7,7 +7,6 @@ const defaults = {
 }
 
 export default class Enumeration extends Record(defaults) {
-
   static fromData(data = {}) {
     let cleanData = {
       id: data['id'] || null,
