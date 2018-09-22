@@ -53,6 +53,14 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
     },
+    defaultScope: {
+      attributes: { exclude: [ 'passwordDigest' ] },
+    },
+    scopes: {
+      withPassword: {
+        attributes: { include: [ 'passwordDigest' ] },
+      },
+    },
   })
 
   const hasSecurePassword = (user, options, callback) => {
@@ -71,8 +79,14 @@ module.exports = (sequelize, DataTypes) => {
     return user
   }
 
-  User.prototype.authenticate = function(value) {
-    if (bcrypt.compareSync(value, this.passwordDigest)) {
+  User.prototype.authenticate = async function(value) {
+    const user = await sequelize.models.User.scope('withPassword').findById(this.id)
+
+    if (!user) {
+      return false
+    }
+
+    if (bcrypt.compareSync(value, user.passwordDigest)) {
       return this
     }
     return false
