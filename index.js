@@ -40,6 +40,7 @@ const activities = require('./routes/activities')
 const roles = require('./routes/roles')
 const portionHealthinesses = require('./routes/portion-healthinesses')
 const portionSizes = require('./routes/portion-sizes')
+const portions = require('./routes/portions')
 
 const { User, Role } = require('./models')
 
@@ -72,6 +73,7 @@ router.use('/activities', ApiUtils.authorize, activities)
 router.use('/roles', ApiUtils.authorize, roles)
 router.use('/portion_healthinesses', ApiUtils.authorize, portionHealthinesses)
 router.use('/portion_sizes', ApiUtils.authorize, portionSizes)
+router.use('/portions', ApiUtils.authorize, portions)
 
 app.use('/api', router)
 

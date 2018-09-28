@@ -104,7 +104,11 @@ export default class PortionList extends React.PureComponent {
   render() {
     return (
       <div className={styles.portion_list}>
-        <Table>
+        <Table
+          selectable={this.props.selectable}
+          multiSelectable={this.props.selectable}
+          onRowSelect={this.props.onRowSelect}
+        >
           <TableHead>
             { TABLE_HEADERS.map((header) => {
               return this._renderTableHeader(header.name, header.label)
@@ -114,6 +118,7 @@ export default class PortionList extends React.PureComponent {
             return (
               <TableRow
                 key={`portion-list-row-${portion.get('id')}`}
+                selected={this.props.filter.get('selectedRows').includes(portion.get('id'))}
               >
                 <TableCell>
                   {String(portion.get('createdAt').format('DD.MM.YYYY HH:mm'))}

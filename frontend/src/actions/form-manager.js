@@ -32,6 +32,16 @@ export default class FormManager extends Manager {
     this._apiManager.createNewActivity(data)
   }
 
+  submitUpdatePortionForm(portion) {
+    const data = ApiUtils.normalizePortionFormData(portion)
+    this._apiManager.updateActivityPortion(portion.get('id'), data)
+  }
+
+  deletePortionForm(portionIds) {
+    const ids = portionIds.toJS()
+    this._apiManager.deleteActivityPortions({ ids })
+  }
+
   clearActivityForm() {
     setImmediate(() => {
       this._formActions.clearPortions()

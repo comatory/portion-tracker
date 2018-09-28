@@ -5,12 +5,17 @@ import { Button } from 'react-toolbox/lib/button'
 
 import styles from '../styles/activity-form.css'
 import ActivityPortion from './activity-portion'
+import FormUtils from '../utils/form-utils'
 
 export default class ActivityForm extends React.PureComponent {
   static contextTypes = {
     enumerationStore: PropTypes.object.isRequired,
     formStore: PropTypes.object.isRequired,
     formManager: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    editing: false,
   }
 
   state = this._getState()
@@ -121,17 +126,11 @@ export default class ActivityForm extends React.PureComponent {
 
   render() {
     const healthinessOptions = this.state.portionHealthinesses.map((portionHealthiness) => {
-      return {
-        value: portionHealthiness.get('id'),
-        label: portionHealthiness.get('name'),
-      }
+      return FormUtils.extractOptionsForSelect(portionHealthiness, 'id', 'name')
     }).toArray()
 
     const sizeOptions = this.state.portionSizes.map((portionSize) => {
-      return {
-        value: portionSize.get('id'),
-        label: portionSize.get('name'),
-      }
+      return FormUtils.extractOptionsForSelect(portionSize, 'id', 'name')
     }).toArray(0)
 
     const newActivityRequestProgress = this.props.newActivityRequest && !this.props.newActivityRequestError
@@ -147,6 +146,7 @@ export default class ActivityForm extends React.PureComponent {
               >
                 <ActivityPortion
                   id={portion.get('id')}
+                  editing={this.props.editing}
                   disabled={newActivityRequestProgress}
                   index={index}
                   onChange={this._handleFormChange}

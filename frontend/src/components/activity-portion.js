@@ -13,6 +13,10 @@ import formStyles from '../styles/form.css'
 import styles from '../styles/activity-portion.css'
 
 export default class ActivityPortion extends React.PureComponent {
+  static defaultProps = {
+    editing: false,
+  }
+
   _handlePortionSizeChange = (value) => {
     this.props.onChange(this.props.id, 'portionSizeId', value)
   }
@@ -38,7 +42,7 @@ export default class ActivityPortion extends React.PureComponent {
       <Card
         className={styles.activity_card}
       >
-        <div className={styles.activity_card_header}>
+        {!this.props.editing && <div className={styles.activity_card_header}>
           <CardTitle
             title={`Portion #${this.props.index + 1}`}
           />
@@ -47,7 +51,7 @@ export default class ActivityPortion extends React.PureComponent {
             onClick={this._handlePortionDelete}
             className={styles.activity_card_delete}
           />
-        </div>
+        </div>}
         <form className={styles.activity_form}>
           <Dropdown
             disabled={this.props.disabled}

@@ -123,6 +123,7 @@ export default class Home extends React.PureComponent {
           showPagination={false}
           filter={this.state.filter}
           onPageChange={this._handlePageChange}
+          selectable={false}
         />
       </div>
     )

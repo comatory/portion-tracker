@@ -40,8 +40,32 @@ export default class RequestManager extends Manager {
     return Promise.resolve(normalized)
   }
 
-  delete(url) {
+  async delete(actionName, url, options = {}) {
+    this._dispatchAddRequestAction('DELETE', actionName, url, options)
 
+    const result = await this._createRequest(url, {
+      body: JSON.stringify(options.data),
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const normalized = await ApiUtils.normalizeBody(result)
+
+    if (normalized.error) {
+      const showErrorOverlay = options.showErrorOverlay || true
+      if (showErrorOverlay) {
+        this._uiManager.showErrorOverlay(normalized, actionName, options.errorActions)
+      }
+      this._dispatchRequestError(actionName, normalized.error)
+      return Promise.reject(normalized.error)
+    }
+
+    this._dispatchRemoveRequestAction(actionName)
+    return Promise.resolve(normalized)
   }
 
   async post(actionName, url, options = {}) {
@@ -50,6 +74,34 @@ export default class RequestManager extends Manager {
     const result = await this._createRequest(url, {
       body: JSON.stringify(options.data),
       method: 'POST',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const normalized = await ApiUtils.normalizeBody(result)
+
+    if (normalized.error) {
+      const showErrorOverlay = options.showErrorOverlay || true
+      if (showErrorOverlay) {
+        this._uiManager.showErrorOverlay(normalized, actionName, options.errorActions)
+      }
+      this._dispatchRequestError(actionName, normalized.error)
+      return Promise.reject(normalized.error)
+    }
+
+    this._dispatchRemoveRequestAction(actionName)
+    return Promise.resolve(normalized)
+  }
+
+  async put(actionName, url, options = {}) {
+    this._dispatchAddRequestAction('PUT', actionName, url, options)
+
+    const result = await this._createRequest(url, {
+      body: JSON.stringify(options.data),
+      method: 'PUT',
       headers: {
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json',

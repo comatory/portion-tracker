@@ -34,4 +34,13 @@ export default class ApiUtils {
       Portions: portions.toArray(),
     }
   }
+
+  static normalizePortionFormData(portion, userInfo) {
+    return {
+      PortionHealthinessId: portion.get('portionHealthinessId'),
+      PortionSizeId: portion.get('portionSizeId'),
+      calories: portion.get('calories') || null,
+      note: portion.get('note') || '',
+    }
+  }
 }

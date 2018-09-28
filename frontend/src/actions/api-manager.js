@@ -1,4 +1,4 @@
-import { List } from 'immutable'
+import { List, Set } from 'immutable'
 
 import Manager from './manager'
 
@@ -187,6 +187,7 @@ export default class ApiManager extends Manager {
           'pages': pages,
           'sortColumn': sortBy,
           'sortDirection': sortDir,
+          'selectedRows': Set(),
         })
 
         this._uiActions.setTableFilter(updatedFilter)
@@ -201,6 +202,42 @@ export default class ApiManager extends Manager {
     this._requestManager.post(
       API_IDS.ACTIVITY_IDS.ACTIVITY_IDS_CREATE_NEW_ACTIVITY,
       `${this.baseUrl}/api/activities`,
+      {
+        data,
+        errorActions: {
+          dismiss: true,
+          retry: true,
+        },
+      }
+    ).then((response) => {
+      console.log(response)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
+  updateActivityPortion(portionId, data) {
+    this._requestManager.put(
+      API_IDS.ACTIVITY_IDS.ACTIVITY_IDS_UPDATE_ACTIVITY_PORTION,
+      `${this.baseUrl}/api/portions/${portionId}`,
+      {
+        data,
+        errorActions: {
+          dismiss: true,
+          retry: true,
+        },
+      }
+    ).then((response) => {
+      console.log(response)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
+  deleteActivityPortions(data) {
+    this._requestManager.delete(
+      API_IDS.ACTIVITY_IDS.ACTIVITY_IDS_DELETE_ACTIVITY_PORTIONS,
+      `${this.baseUrl}/api/portions/`,
       {
         data,
         errorActions: {
