@@ -1,6 +1,6 @@
 {
   "name": "portion-tracker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Track your food portions during the day. This app contains both backend & frontend.",
   "main": "index.js",
   "engines": {
