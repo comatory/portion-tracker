@@ -19,6 +19,7 @@ export default class ActivityStore extends Store {
     this.bindListeners({
       handleSetUserActivities: this._activityActions.SET_USER_ACTIVITIES,
       handleSetUserActivitiesPortions: this._activityActions.SET_USER_ACTIVITIES_PORTIONS,
+      handleRemoveActivityPortion: this._activityActions.REMOVE_ACTIVITY_PORTION,
       handleSetUserInfo: this._userActions.SET_USER_INFO,
       handleLogout: this._loginActions.LOGOUT_USER,
     })
@@ -43,6 +44,17 @@ export default class ActivityStore extends Store {
   handleSetUserActivitiesPortions({ userActivitiesPortions, filterId }) {
     this._updateUserActivitiesPortions(userActivitiesPortions)
     this._updateIndex(filterId, userActivitiesPortions.map((a) => a.get('id')))
+  }
+
+  handleRemoveActivityPortion({ portionIds }) {
+    const userId = this._getUserId()
+    const userActivitiesPortions = this._state.getIn([ 'userActivitiesPortions', userId ])
+
+    const newUserActivitiesPortions = userActivitiesPortions.filter((portion) => {
+      return !portionIds.includes(portion.get('id'))
+    })
+
+    this._state = this._state.setIn([ 'userActivitiesPortions', userId ], newUserActivitiesPortions)
   }
 
   _updateUserActivitiesPortions(userActivitiesPortions) {

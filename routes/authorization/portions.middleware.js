@@ -16,7 +16,7 @@ const authorizePortions = async (req, res, next) => {
     },
   }).map((p) => parseInt(p.PortionId))
 
-  const portionIds = req.body.ids.map((i) => parseInt(i))
+  const portionIds = req.body.ids ? req.body.ids.map((i) => parseInt(i)) : []
 
   const notAllowed = portionIds.some((id) => {
     return !activityPortionsIds.includes(id)
@@ -33,7 +33,7 @@ const authorizePortions = async (req, res, next) => {
       }
       break
     default:
-      PermissionUtils.unauthorizedResponse(res)
+      next()
   }
 }
 
