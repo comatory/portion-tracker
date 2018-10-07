@@ -246,6 +246,7 @@ export default class ApiManager extends Manager {
         },
       }
     ).then((response) => {
+      this._activityActions.removeActivityPortion(data.ids)
       console.log(response)
     }).catch((error) => {
       console.log(error)

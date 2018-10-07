@@ -6,4 +6,8 @@ export default class ActivityActions {
   setUserActivitiesPortions(userActivitiesPortions, filterId) {
     return { userActivitiesPortions, filterId }
   }
+
+  removeActivityPortion(portionIds) {
+    return { portionIds }
+  }
 }
