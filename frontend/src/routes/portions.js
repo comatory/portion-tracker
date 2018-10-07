@@ -8,7 +8,9 @@ import { TableFilter } from '../entities'
 export default class Activities extends React.PureComponent {
   static contextTypes = {
     apiManager: PropTypes.object.isRequired,
+    formManager: PropTypes.object.isRequired,
     requestStore: PropTypes.object.isRequired,
+    uiActions: PropTypes.object.isRequired,
     uiStore: PropTypes.object.isRequired,
   }
 
@@ -61,8 +63,18 @@ export default class Activities extends React.PureComponent {
       ACTIVITY_IDS_REQUESTS.ACTIVITY_IDS_GET_USER_ACTIVITIES_PORTIONS
     )
 
+    const updatePortionRequest = this.context.requestStore.getRequest(
+      ACTIVITY_IDS_REQUESTS.ACTIVITY_IDS_UPDATE_ACTIVITY_PORTION
+    )
+
+    const deletePortionRequest = this.context.requestStore.getRequest(
+      ACTIVITY_IDS_REQUESTS.ACTIVITY_IDS_DELETE_ACTIVITY_PORTIONS
+    )
+
     return {
+      deletePortionRequest,
       userActivitiesPortionRequest,
+      updatePortionRequest,
     }
   }
 
@@ -85,11 +97,35 @@ export default class Activities extends React.PureComponent {
     this._fetchUserActivitiesPortions(pageNumber)
   }
 
-  _fetchUserActivitiesPortions(pageNumber) {
+  _fetchUserActivitiesPortions = (pageNumber) => {
     this.context.apiManager.getUserActivitiesPortions({
       page: pageNumber,
       filter: this.state.filter,
     })
+  }
+
+  _handleRowSelect = (ids) => {
+    const nextFilter = this.state.filter.update((nextFilter) => {
+      return nextFilter.set('selectedRows', ids)
+    })
+
+    this.context.uiActions.setTableFilter(nextFilter)
+  }
+
+  _handleFormSubmit = (portion) => {
+    if (this.state.updatePortionRequest) {
+      return
+    }
+
+    this.context.formManager.submitUpdatePortionForm(portion)
+  }
+
+  _handleFormDelete = (portionIds) => {
+    if (portionIds.size < 1 || this.state.deletePortionRequest) {
+      return
+    }
+
+    this.context.formManager.deletePortionForm(portionIds)
   }
 
   render() {
@@ -97,9 +133,15 @@ export default class Activities extends React.PureComponent {
       <div>
         <h1>Portions view</h1>
         <PortionContainer
+          showPagination
           filter={this.state.filter}
           onPageChange={this._handlePageChange}
-          showPagination
+          onRowSelect={this._handleRowSelect}
+          onSubmit={this._handleFormSubmit}
+          onDelete={this._handleFormDelete}
+          onActivityPortionsRequest={this._fetchUserActivitiesPortions}
+          deleteRequest={this.state.deletePortionRequest}
+          updateRequest={this.state.updatePortionRequest}
         />
       </div>
     )

@@ -18,5 +18,9 @@
   "activities": {
     "admin": [ "getAll", "createAll", "activityPortionsAll" ],
     "user": [ "get", "create", "activityPortions" ]
+  },
+  "portions": {
+    "admin": [ "updateAll", "deleteAll" ],
+    "user": [ "update", "delete" ]
   }
 }

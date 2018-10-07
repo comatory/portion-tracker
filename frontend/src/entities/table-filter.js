@@ -1,4 +1,4 @@
-import { Record, OrderedMap } from 'immutable'
+import { Record, OrderedMap, Set } from 'immutable'
 
 const defaults = {
   id: null,
@@ -9,6 +9,7 @@ const defaults = {
   sortColumn: null,
   sortDirection: null,
   query: OrderedMap(),
+  selectedRows: Set(),
 }
 
 export default class TableFilter extends Record(defaults) {
@@ -22,6 +23,7 @@ export default class TableFilter extends Record(defaults) {
       sortColumn: data['sortColumn'] || null,
       sortDirection: data['sortDir'] || 'DESC',
       query: data['query'] || OrderedMap(),
+      selectedRows: data['selectedRows'] || Set(),
     }
 
     return new TableFilter(cleanData)
