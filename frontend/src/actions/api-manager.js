@@ -69,6 +69,40 @@ export default class ApiManager extends Manager {
       })
   }
 
+  registerUser(data) {
+    this._requestManager.post(
+      API_IDS.REGISTER_IDS.REGISTER_IDS_REGISTER,
+      `${this.baseUrl}/api/registration`, {
+        data,
+        errorActions: {
+          dismiss: true,
+        },
+      },
+    )
+      .then((response) => {
+        this._requestManager.removeRequest(API_IDS.REGISTER_IDS.REGISTER_IDS_REGISTER)
+      })
+      .catch((error) => {
+        this._requestManager.setRequestError(API_IDS.REGISTER_IDS.REGISTER_IDS_REGISTER, error)
+        console.log(error)
+      })
+  }
+
+  verifyUser(data) {
+    this._requestManager.post(
+      API_IDS.REGISTER_IDS.REGISTER_IDS_VERIFY_USER_EMAIL,
+      `${this.baseUrl}/api/registration/verify`,
+      { data }
+    )
+      .then((response) => {
+        this._uiManager.reloadApp()
+      })
+      .catch((error) => {
+        this._requestManager.setRequestError(API_IDS.REGISTER_IDS.REGISTER_IDS_VERIFY_USER_EMAIL, error)
+        console.log(error)
+      })
+  }
+
   loadRequiredAppData(userInfo) {
     const userId = userInfo.get('id')
 

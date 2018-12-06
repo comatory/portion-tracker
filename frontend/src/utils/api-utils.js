@@ -3,10 +3,12 @@ import { List } from 'immutable'
 export default class ApiUtils {
   static async normalizeBody(response) {
     const json = await response.json()
+    const verifiedHeader = response.headers.get('X-User-Verified')
 
     let baseResponse = {
       body: json,
       status: response.status,
+      userVerified: verifiedHeader ? Boolean(JSON.parse(verifiedHeader)) : null,
     }
 
     if (response.status !== 200) {
