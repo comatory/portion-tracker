@@ -8,7 +8,11 @@ class ApiUtils {
       cleanedError = { message: error.message }
     }
     console.error(error)
-    res.status(500).json(cleanedError)
+    res.status(error.statusCode || 500).json(cleanedError)
+  }
+
+  static sequelizeError(error, req, res, next) {
+    ApiUtils.catchError(error, req, res, next)
   }
 
   static validResponse(entity, response, options = {}) {
@@ -73,6 +77,30 @@ class ApiUtils {
     } else {
       response.status(403).json({ message: 'not authorized' })
     }
+  }
+
+  static verifyUser(request, response, next) {
+    if (!request.session.user) {
+      next()
+    }
+
+    const verified = Boolean(request.session.user.verified)
+
+    const verifiedResponse = ApiUtils.setVerifyHeader(request, response)
+
+    if (!verified) {
+      verifiedResponse.status(403).json({ message: 'user not verified' })
+    } else {
+      next()
+    }
+  }
+
+  static setVerifyHeader(request, response) {
+    const verified = Boolean(request.session.user.verified)
+
+    response.set('X-User-Verified', verified)
+
+    return response
   }
 }
 

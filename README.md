@@ -87,3 +87,7 @@ After the first deployment of the app, you should most likely run `heroku run db
 run all seeds located in `./seeders`. This sets up default roles and other data required for the
 proper functioning of the app (including the admin user).
 Feel free to modify this for your needs.
+
+## Email
+
+App uses Sendgrid service to implement emails. There is only single email that gets delivered to user and that is to verify signed up user. You need to have Sendgrid account and provide variables `SENDGRID_API_KEY` with your API key and `SENDGRID_APP_EMAIL` for the app email (sender). 

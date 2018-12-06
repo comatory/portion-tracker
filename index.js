@@ -5,9 +5,11 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const { Pool } = require('pg')
+const hat = require('hat')
 
 const pgConfig = require('./config/config.json')[process.env.NODE_ENV]
 const DevUtils = require('./utils/dev-utils')
+const RegistrationUtils = require('./utils/registration-utils')
 
 const app = express()
 
@@ -32,6 +34,9 @@ const corsOptions = {
     'Access-Control-Allow-Credentials',
     'Content-Type',
   ],
+  exposedHeaders: [
+    'X-User-Verified',
+  ],
   credentials: true,
 }
 
@@ -41,6 +46,7 @@ const roles = require('./routes/roles')
 const portionHealthinesses = require('./routes/portion-healthinesses')
 const portionSizes = require('./routes/portion-sizes')
 const portions = require('./routes/portions')
+const registration = require('./routes/registration')
 
 const { User, Role } = require('./models')
 
@@ -68,16 +74,15 @@ app.use(session({
   secure: true,
 }))
 
-router.use('/users', ApiUtils.authorize, users)
-router.use('/activities', ApiUtils.authorize, activities)
-router.use('/roles', ApiUtils.authorize, roles)
-router.use('/portion_healthinesses', ApiUtils.authorize, portionHealthinesses)
-router.use('/portion_sizes', ApiUtils.authorize, portionSizes)
-router.use('/portions', ApiUtils.authorize, portions)
+router.use('/users', ApiUtils.authorize, ApiUtils.verifyUser, users)
+router.use('/activities', ApiUtils.authorize, ApiUtils.verifyUser, activities)
+router.use('/roles', ApiUtils.authorize, ApiUtils.verifyUser, roles)
+router.use('/portion_healthinesses', ApiUtils.authorize, ApiUtils.verifyUser, portionHealthinesses)
+router.use('/portion_sizes', ApiUtils.authorize, ApiUtils.verifyUser, portionSizes)
+router.use('/portions', ApiUtils.authorize, ApiUtils.verifyUser, portions)
+router.use('/registration', registration)
 
 app.use('/api', router)
-
-app.use(ApiUtils.catchError)
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'))
@@ -92,7 +97,7 @@ app.post('/login', async (req, res, next) => {
       include: [ Role ],
     })
 
-    if (user && user.authenticate(password)) {
+    if (user && await user.authenticate(password)) {
       req.session.user = user.toJSON()
       req.session.save((err) => {
         if (err) {
@@ -117,6 +122,8 @@ app.post('/logout', (req, res, next) => {
     next(error)
   }
 })
+
+app.use(ApiUtils.catchError)
 
 app.listen(port, () => {
   console.info(`App is listening on port ${port}`)
