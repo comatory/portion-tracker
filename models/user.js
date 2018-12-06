@@ -1,6 +1,7 @@
 'use strict'
 
 const bcrypt = require('bcrypt')
+const hat = require('hat')
 
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
@@ -39,6 +40,20 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: true,
       },
+    },
+    verified: {
+      type: DataTypes.BOOLEAN,
+      validate: {
+        notEmpty: true,
+      },
+      defaultValue: false,
+    },
+    verificationCode: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+      defaultValue: hat(),
     },
   }, {
     hooks: {

@@ -14,6 +14,8 @@ const authorizeUsers = async (req, res, next) => {
     case 'POST':
       if (PermissionUtils.can(req.session.user, 'users', [ 'createAll' ])) {
         next()
+      } else if (PermissionUtils.can(req.session.user, 'users', [ 'create' ])) {
+        next()
       } else {
         PermissionUtils.unauthorizedResponse(res)
       }

@@ -29,4 +29,8 @@ export default class UiManager extends Manager {
   hideErrorOverlay(id) {
     this._uiActions.unregisterUiItem(id)
   }
+
+  reloadApp() {
+    window.location.reload()
+  }
 }

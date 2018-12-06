@@ -6,6 +6,7 @@ import {
 } from 'react-toolbox/lib'
 
 import Login from '../components/login'
+import VerificationForm from '../components/verification-form'
 
 export default class ErrorOverlay extends React.PureComponent {
   static contextTypes = {
@@ -51,10 +52,14 @@ export default class ErrorOverlay extends React.PureComponent {
   }
 
   render() {
+    const response = this.props.response || {}
     let content = null
-    const errorMessage = this.props.response && this.props.response.error ?
-      this.props.response.error.message || JSON.stringify(this.props.response.error.stack) :
+    const errorMessage = response.error ?
+      response.error.message || JSON.stringify(response.error.stack) :
       ''
+    const userVerified = response && response.userVerified !== null ?
+      Boolean(response.userVerified) :
+      true
 
     switch (this.props.status) {
       case 403:
@@ -70,6 +75,7 @@ export default class ErrorOverlay extends React.PureComponent {
         break
 
       case 500:
+      case 422:
         content = (
           <div>
             <h2>Error!</h2>
@@ -98,6 +104,10 @@ export default class ErrorOverlay extends React.PureComponent {
     }
 
     const message = this.props.response.body && this.props.response.body.message
+
+    if (!userVerified) {
+      content = <VerificationForm />
+    }
 
     return (
       <div>
