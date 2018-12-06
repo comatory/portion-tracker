@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt')
+const hat = require('hat')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -10,6 +11,8 @@ module.exports = {
         passwordDigest: password,
         createdAt: new Date(),
         updatedAt: new Date(),
+        verified: false,
+        verificationCode: hat(),
       },
       {
         id: 2,
@@ -17,6 +20,8 @@ module.exports = {
         passwordDigest: password,
         createdAt: new Date(),
         updatedAt: new Date(),
+        verified: false,
+        verificationCode: hat(),
       },
     ])
   },
