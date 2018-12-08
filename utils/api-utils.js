@@ -1,3 +1,5 @@
+const ErrorUtils = require('./error-utils')
+
 const DEFAULT_OFFSET = 1
 const DEFAULT_LIMIT = 5
 
@@ -9,12 +11,9 @@ class ApiUtils {
   }
 
   static catchError(error, req, res, next) {
-    let cleanedError = error
-    if (Object.keys(error).length < 2 && error.message) {
-      cleanedError = { message: error.message }
-    }
-    console.error(error)
-    res.status(error.statusCode || 500).json(cleanedError)
+    const errorWithStatusCode = ErrorUtils.setStatusCode(error)
+    const errorWithBody = ErrorUtils.setErrorBody(errorWithStatusCode)
+    res.status(errorWithBody.statusCode).json(errorWithBody.formattedBody)
   }
 
   static sequelizeError(error, req, res, next) {
