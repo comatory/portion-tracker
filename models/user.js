@@ -3,6 +3,8 @@
 const bcrypt = require('bcrypt')
 const hat = require('hat')
 
+const ErrorUtils = require('../utils/error-utils.js')
+
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
     email: {
@@ -98,13 +100,13 @@ module.exports = (sequelize, DataTypes) => {
     const user = await sequelize.models.User.scope('withPassword').findById(this.id)
 
     if (!user) {
-      return false
+      throw ErrorUtils.createValidationError('User not found!')
     }
 
     if (bcrypt.compareSync(value, user.passwordDigest)) {
       return this
     }
-    return false
+    throw ErrorUtils.createValidationError('Wrong user name or password.')
   }
 
   User.prototype.isAdmin = async function() {

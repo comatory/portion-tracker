@@ -96,7 +96,11 @@ app.post('/login', ApiUtils.wrapAsync(async (req, res, next) => {
     include: [ Role ],
   })
 
-  if (user && await user.authenticate(password)) {
+  if (!user) {
+    next(new Error('User not found'))
+  }
+
+  await user.authenticate(password).then((user) => {
     req.session.user = user.toJSON()
     req.session.save((err) => {
       if (err) {
@@ -105,9 +109,7 @@ app.post('/login', ApiUtils.wrapAsync(async (req, res, next) => {
 
       ApiUtils.validResponse(user, res)
     })
-  } else {
-    res.status(403).json({ message: 'Not authenticated!' })
-  }
+  })
 }))
 
 app.post('/logout', ApiUtils.wrapAsync((req, res) => {

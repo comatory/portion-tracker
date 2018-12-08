@@ -40,6 +40,14 @@ class ErrorUtils {
       return acc
     }, {})
   }
+
+  static createValidationError(message) {
+    const error = new ValidationError(message)
+
+    error.errors = [ { message } ]
+
+    return error
+  }
 }
 
 module.exports = ErrorUtils
