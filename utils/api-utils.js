@@ -2,6 +2,12 @@ const DEFAULT_OFFSET = 1
 const DEFAULT_LIMIT = 5
 
 class ApiUtils {
+  static wrapAsync(fn) {
+    return (req, res, next) => {
+      fn(req, res, next).catch(next)
+    }
+  }
+
   static catchError(error, req, res, next) {
     let cleanedError = error
     if (Object.keys(error).length < 2 && error.message) {

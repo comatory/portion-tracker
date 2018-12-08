@@ -6,14 +6,10 @@ const { authorizePortionHealthinesses } = require('./authorization/portion-healt
 const router = Router()
 
 router.use('/', authorizePortionHealthinesses)
-router.get('/', async (req, res, next) => {
-  try {
-    const portionHealthinesses = await PortionHealthiness.findAll()
+router.get('/', ApiUtils.wrapAsync(async (req, res) => {
+  const portionHealthinesses = await PortionHealthiness.findAll()
 
-    ApiUtils.validResponse(portionHealthinesses, res)
-  } catch (error) {
-    next(error)
-  }
-})
+  ApiUtils.validResponse(portionHealthinesses, res)
+}))
 
 module.exports = router

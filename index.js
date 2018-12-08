@@ -88,40 +88,34 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
-app.post('/login', async (req, res, next) => {
+app.post('/login', ApiUtils.wrapAsync(async (req, res, next) => {
   const { email, password } = req.body
 
-  try {
-    const user = await User.findOne({
-      where: { email },
-      include: [ Role ],
+  const user = await User.findOne({
+    where: { email },
+    include: [ Role ],
+  })
+
+  if (user && await user.authenticate(password)) {
+    req.session.user = user.toJSON()
+    req.session.save((err) => {
+      if (err) {
+        next(err)
+      }
+
+      ApiUtils.validResponse(user, res)
     })
-
-    if (user && await user.authenticate(password)) {
-      req.session.user = user.toJSON()
-      req.session.save((err) => {
-        if (err) {
-          next(err)
-        }
-        ApiUtils.validResponse(user, res)
-      })
-    } else {
-      res.status(403).json({ message: 'Not authenticated!' })
-    }
-  } catch (error) {
-    next(error)
+  } else {
+    res.status(403).json({ message: 'Not authenticated!' })
   }
-})
+}))
 
-app.post('/logout', (req, res, next) => {
-  try {
-    req.session.destroy()
-    res.clearCookie('portion-tracker')
-    ApiUtils.validResponse({ message: 'ok' }, res)
-  } catch (error) {
-    next(error)
-  }
-})
+app.post('/logout', ApiUtils.wrapAsync((req, res) => {
+  req.session.destroy()
+  res.clearCookie('portion-tracker')
+
+  ApiUtils.validResponse({ message: 'ok' }, res)
+}))
 
 app.use(ApiUtils.catchError)
 

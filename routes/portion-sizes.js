@@ -6,14 +6,10 @@ const { authorizePortionSizes } = require('./authorization/portion-sizes.middlew
 const router = Router()
 
 router.use('/', authorizePortionSizes)
-router.get('/', async (req, res, next) => {
-  try {
-    const portionSizes = await PortionSize.findAll()
+router.get('/', ApiUtils.wrapAsync(async (req, res) => {
+  const portionSizes = await PortionSize.findAll()
 
-    ApiUtils.validResponse(portionSizes, res)
-  } catch (error) {
-    next(error)
-  }
-})
+  ApiUtils.validResponse(portionSizes, res)
+}))
 
 module.exports = router
