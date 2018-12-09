@@ -81,6 +81,10 @@ router.use('/sessions', sessions)
 
 app.use('/api', router)
 
+// NOTE: Hanlde unknown routes
+app.get('*', (req, res, next) => {
+  next(new NotFoundError())
+})
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
