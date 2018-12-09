@@ -1,3 +1,8 @@
+![Image of PortionTracker front-end app](./docs/demo.png)
+
+I created this simple app for myself, I wanted something simple for recording what time I eat at and the size of the portions. This should help anyone get a better idea of their eating habits. The app will eventually run as PWA (Progressive Web App) which means it can work offline.
+
+This repository contains backend application written in Node and ExpressJS and the frontend app written in React. You can host your own instance or use mine at [https://portion-tracker.herokuapp.com](https://portion-tracker.herokuapp.com) to create your own account.
 
 # Development
 
