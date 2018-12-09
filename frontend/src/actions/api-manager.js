@@ -41,7 +41,7 @@ export default class ApiManager extends Manager {
   login(data) {
     this._requestManager.post(
       API_IDS.LOGIN_IDS.LOGIN_IDS_LOGIN,
-      `${this.baseUrl}/login`,
+      `${this.baseUrl}/api/sessions/login`,
       { data },
     )
       .then((response) => {
@@ -58,7 +58,7 @@ export default class ApiManager extends Manager {
   logout() {
     this._requestManager.post(
       API_IDS.LOGIN_IDS.LOGIN_IDS_LOGOUT,
-      `${this.baseUrl}/logout`
+      `${this.baseUrl}/api/sessions/logout`
     )
       .then((response) => {
         this._loginActions.logoutUser()
