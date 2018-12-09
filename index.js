@@ -9,6 +9,7 @@ const { Pool } = require('pg')
 const pgConfig = require('./config/config.json')[process.env.NODE_ENV]
 const DevUtils = require('./utils/dev-utils')
 const ApiUtils = require('./utils/api-utils')
+const NotFoundError = require('./errors/not-found-error')
 
 const app = express()
 
@@ -85,10 +86,13 @@ app.use('/api', router)
 app.get('*', (req, res, next) => {
   next(new NotFoundError())
 })
+
+// NOTE: Send front-end app to client
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
+// NOTE: Middleware to capture & handle errors
 app.use(ApiUtils.catchError)
 
 app.listen(port, () => {
