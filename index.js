@@ -5,11 +5,10 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const { Pool } = require('pg')
-const hat = require('hat')
 
 const pgConfig = require('./config/config.json')[process.env.NODE_ENV]
 const DevUtils = require('./utils/dev-utils')
-const RegistrationUtils = require('./utils/registration-utils')
+const ErrorUtils = require('./utils/error-utils')
 
 const app = express()
 
@@ -97,7 +96,7 @@ app.post('/login', ApiUtils.wrapAsync(async (req, res, next) => {
   })
 
   if (!user) {
-    next(new Error('User not found'))
+    next(ErrorUtils.createResourceNotFoundError('User not found.'))
   }
 
   await user.authenticate(password).then((user) => {

@@ -1,4 +1,5 @@
 const ErrorUtils = require('./error-utils')
+const AuthorizationError = require('../errors/authorization-error')
 
 const DEFAULT_OFFSET = 1
 const DEFAULT_LIMIT = 5
@@ -14,10 +15,6 @@ class ApiUtils {
     const errorWithStatusCode = ErrorUtils.setStatusCode(error)
     const errorWithBody = ErrorUtils.setErrorBody(errorWithStatusCode)
     res.status(errorWithBody.statusCode).json(errorWithBody.formattedBody)
-  }
-
-  static sequelizeError(error, req, res, next) {
-    ApiUtils.catchError(error, req, res, next)
   }
 
   static validResponse(entity, response, options = {}) {
@@ -80,7 +77,7 @@ class ApiUtils {
     if (request.session.user && request.cookies['portion-tracker']) {
       next()
     } else {
-      response.status(403).json({ message: 'not authorized' })
+      next(new AuthorizationError())
     }
   }
 
@@ -91,10 +88,10 @@ class ApiUtils {
 
     const verified = Boolean(request.session.user.verified)
 
-    const verifiedResponse = ApiUtils.setVerifyHeader(request, response)
+    ApiUtils.setVerifyHeader(request, response)
 
     if (!verified) {
-      verifiedResponse.status(403).json({ message: 'user not verified' })
+      next(new AuthorizationError('User not verified!'))
     } else {
       next()
     }

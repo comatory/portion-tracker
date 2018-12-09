@@ -62,7 +62,9 @@ export default class ErrorOverlay extends React.PureComponent {
       true
 
     switch (this.props.status) {
+      case 401:
       case 403:
+      case 404:
         content = (
           <div>
             <h2>Warning!</h2>

@@ -1,10 +1,12 @@
-const { ValidationError } = require('sequelize')
+const { ValidationError, EmptyResultError } = require('sequelize')
 
 class ErrorUtils {
   static setStatusCode(error) {
     if (error instanceof ValidationError) {
-      error.statusCode = 403
-    } else {
+      error.statusCode = 422
+    } else if (error instanceof EmptyResultError) {
+      error.statusCode = 404
+    } else if (!error.statusCode) {
       error.statusCode = 500
     }
     return error
@@ -12,7 +14,7 @@ class ErrorUtils {
 
   static setErrorBody(error) {
     switch (error.statusCode) {
-      case 403:
+      case 422:
         error.formattedBody = ErrorUtils.createValidationErrorBody(error)
         break
       case 500:
@@ -23,7 +25,7 @@ class ErrorUtils {
   }
 
   static createGenericErrorBody(error) {
-    if (Object.keys(error).length < 2 && error.message) {
+    if (error.message) {
       return { message: error.message }
     }
     return { message: JSON.stringify(error) }
@@ -42,9 +44,17 @@ class ErrorUtils {
   }
 
   static createValidationError(message) {
-    const error = new ValidationError(message)
+    const error = new ValidationError()
 
     error.errors = [ { message } ]
+
+    return error
+  }
+
+  static createResourceNotFoundError(message) {
+    const error = new EmptyResultError()
+
+    error.message = message
 
     return error
   }

@@ -3,6 +3,7 @@ const hat = require('hat')
 const { Role, User } = require('../models')
 const ApiUtils = require('../utils/api-utils')
 const RegistrationUtils = require('../utils/registration-utils')
+const ErrorUtils = require('../utils/error-utils')
 
 const router = Router()
 
@@ -11,18 +12,16 @@ router.post('/', ApiUtils.wrapAsync(async (req, res, next) => {
 
   const userRole = await Role.findOne({ name: 'user' })
   const RoleIds = [ userRole.id ]
-  User.create({
+  const user = await User.create({
     email,
     password,
     passwordConfirmation,
-  }).then((user) => {
-    user.setRoles(RoleIds)
-    RegistrationUtils.sendVerificationEmail(user.email, user.verificationCode)
-    ApiUtils.validResponse(user, res)
-  }).catch((error) => {
-    error.statusCode = 422
-    ApiUtils.sequelizeError(error, req, res, next)
   })
+  user.setRoles(RoleIds)
+
+  RegistrationUtils.sendVerificationEmail(user.email, user.verificationCode)
+
+  ApiUtils.validResponse(user, res)
 }))
 
 router.post('/verify', ApiUtils.wrapAsync(async (req, res, next) => {
@@ -51,10 +50,10 @@ router.post('/verify', ApiUtils.wrapAsync(async (req, res, next) => {
         ApiUtils.validResponse(user, verifiedResponse)
       })
     } else {
-      next(new Error('User not found'))
+      next(ErrorUtils.createResourceNotFoundError('User not found'))
     }
   } else {
-    res.status(403).json({ message: 'Invalid verification code' })
+    next(ErrorUtils.createValidationErrorBody('Wrong verification code.'))
   }
 }))
 
