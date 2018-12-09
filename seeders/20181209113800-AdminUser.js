@@ -24,7 +24,7 @@ module.exports = {
         passwordDigest: password,
         createdAt: new Date(),
         updatedAt: new Date(),
-        verified: false,
+        verified: true,
         verificationCode: hat(),
       },
     ])
