@@ -10,9 +10,9 @@
   "scripts": {
     "db:model:generate": "sequelize model:generate",
     "db:recreate": "NODE_ENV=development sequelize db:drop && sequelize db:create && sequelize db:migrate && npm run db:seed",
-    "db:seed": "NODE_ENV=production sequelize db:seed:all",
+    "db:seed:production": "NODE_ENV=production sequelize db:seed:all",
     "db:seed:staging": "NODE_ENV=staging sequelize db:seed:all",
-    "deploy:production": "NODE_ENV=production && git push heroku master && heroku run --remote production sequelize -- db:migrate",
+    "deploy:production": "NODE_ENV=production && git push heroku master && heroku run --remote heroku sequelize -- db:migrate",
     "deploy:staging": "NODE_ENV=staging && git push staging development:master && heroku run --remote staging sequelize -- db:migrate",
     "eslint": "./node_modules/.bin/eslint",
     "heroku-postbuild": "cd frontend && npm install --dev && cd .. && gulp prepublish",
