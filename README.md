@@ -66,6 +66,7 @@ There is a script to run back end server with `--inspect` option. It'll run `nod
 The `package.json` file is set up to work with Heroku service. Feel free to modify this to your needs.
 If you want to preview the production frontend app in development backend server, run `npm run heroku-postbuild`.
 This will build the frontend app and place it into `public/` directory, the backend server then reads it from there.
+Do not forget to run `npm run db:seed` to add required data.
 
 ## Heroku
 
@@ -83,7 +84,7 @@ To deploy to staging server, run `npm run deploy:production`.
 
 ## Required data / Seeds
 
-After the first deployment of the app, you should most likely run `heroku run db:seed` which will
+After the first deployment of the app, you must run `npm run db:seed` which will
 run all seeds located in `./seeders`. This sets up default roles and other data required for the
 proper functioning of the app (including the admin user).
 Feel free to modify this for your needs.
