@@ -5,7 +5,7 @@ const ErrorUtils = require('../utils/error-utils')
 
 const router = Router()
 
-router.post('/login', ApiUtils.wrapAsync(async (req, res, next) => {
+router.post('/', ApiUtils.wrapAsync(async (req, res, next) => {
   const { email, password } = req.body
 
   const user = await User.findOne({
@@ -29,7 +29,7 @@ router.post('/login', ApiUtils.wrapAsync(async (req, res, next) => {
   })
 }))
 
-router.post('/logout', ApiUtils.wrapAsync((req, res) => {
+router.delete('/', ApiUtils.wrapAsync((req, res) => {
   req.session.destroy()
   res.clearCookie('portion-tracker')
 
