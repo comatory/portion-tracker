@@ -11,39 +11,31 @@ const {
 const router = Router()
 
 router.use('/', authorizePortions)
-router.delete('/', async (req, res, next) => {
+router.delete('/', ApiUtils.wrapAsync(async (req, res) => {
   const { ids } = req.body
 
-  try {
-    await Portion.update({
-      active: false,
-    }, {
-      where: {
-        id: {
-          [Op.in]: ids,
-        },
+  await Portion.update({
+    active: false,
+  }, {
+    where: {
+      id: {
+        [Op.in]: ids,
       },
-    })
+    },
+  })
 
-    ApiUtils.validResponse(ids, res)
-  } catch (error) {
-    next(error)
-  }
-})
+  ApiUtils.validResponse(ids, res)
+}))
 
 router.use('/:id', authorizePortion)
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', ApiUtils.wrapAsync(async (req, res) => {
   const id = req.params.id
   const { note, calories, PortionSizeId, PortionHealthinessId } = req.body
   const portion = await Portion.findById(id)
 
-  try {
-    await portion.update({ note, calories, PortionSizeId, PortionHealthinessId })
+  await portion.update({ note, calories, PortionSizeId, PortionHealthinessId })
 
-    ApiUtils.validResponse(portion, res)
-  } catch (error) {
-    next(error)
-  }
-})
+  ApiUtils.validResponse(portion, res)
+}))
 
 module.exports = router

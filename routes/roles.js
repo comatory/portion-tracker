@@ -9,63 +9,43 @@ const {
 const router = Router()
 
 router.use('/', authorizeRoles)
-router.get('/', async (req, res, next) => {
-  try {
-    const roles = await Role.findAll()
-    ApiUtils.validResponse(roles, res)
-  } catch (error) {
-    next(error)
-  }
-})
+router.get('/', ApiUtils.wrapAsync(async (req, res) => {
+  const roles = await Role.findAll()
+  ApiUtils.validResponse(roles, res)
+}))
 
-router.post('/', async (req, res, next) => {
+router.post('/', ApiUtils.wrapAsync(async (req, res) => {
   const { name, UserId } = req.body
 
-  try {
-    const role = await Role.create({
-      name,
-      UserId,
-    })
-    ApiUtils.validResponse(role, res)
-  } catch (error) {
-    next(error)
-  }
-})
+  const role = await Role.create({
+    name,
+    UserId,
+  })
+  ApiUtils.validResponse(role, res)
+}))
 
 router.use('/:id', authorizeRole)
-router.get('/:id', async (req, res, next) => {
-  try {
-    const role = await Role.findById(req.params.id)
-    ApiUtils.validResponse(role, res)
-  } catch (error) {
-    next(error)
-  }
-})
+router.get('/:id', ApiUtils.wrapAsync(async (req, res) => {
+  const role = await Role.findById(req.params.id)
+  ApiUtils.validResponse(role, res)
+}))
 
-router.put('/:id', async (req, res, next) => {
-  try {
-    const role = await Role.findById(req.params.id)
-    const { name, UserId } = req.body
+router.put('/:id', ApiUtils.wrapAsync(async (req, res) => {
+  const role = await Role.findById(req.params.id)
+  const { name, UserId } = req.body
 
-    await role.update({
-      name,
-      UserId,
-    })
+  await role.update({
+    name,
+    UserId,
+  })
 
-    ApiUtils.validResponse(role, res)
-  } catch (error) {
-    next(error)
-  }
-})
+  ApiUtils.validResponse(role, res)
+}))
 
-router.delete('/:id', async (req, res, next) => {
-  try {
-    const role = await Role.findById(req.params.id)
-    await role.destroy()
-    ApiUtils.validResponse(role, res, { message: 'ok' })
-  } catch (error) {
-    next(error)
-  }
-})
+router.delete('/:id', ApiUtils.wrapAsync(async (req, res) => {
+  const role = await Role.findById(req.params.id)
+  await role.destroy()
+  ApiUtils.validResponse(role, res, { message: 'ok' })
+}))
 
 module.exports = router

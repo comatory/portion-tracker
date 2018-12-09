@@ -3,6 +3,9 @@
 const bcrypt = require('bcrypt')
 const hat = require('hat')
 
+const ErrorUtils = require('../utils/error-utils.js')
+const AuthenticationError = require('../errors/authentication-error')
+
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
     email: {
@@ -80,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
 
   const hasSecurePassword = (user, options, callback) => {
     if (user.password !== user.passwordConfirmation) {
-      throw new Error("Password confirmation doesn't match Password")
+      throw ErrorUtils.createValidationError("Password confirmation doesn't match Password")
     }
 
     const hash = bcrypt.hashSync(user.password.toString(), 10, (err, hash) => {
@@ -98,13 +101,13 @@ module.exports = (sequelize, DataTypes) => {
     const user = await sequelize.models.User.scope('withPassword').findById(this.id)
 
     if (!user) {
-      return false
+      throw ErrorUtils.createResourceNotFoundError('User not found!')
     }
 
     if (bcrypt.compareSync(value, user.passwordDigest)) {
       return this
     }
-    return false
+    throw new AuthenticationError('Wrong user name or password.')
   }
 
   User.prototype.isAdmin = async function() {

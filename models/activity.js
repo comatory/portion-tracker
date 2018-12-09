@@ -1,3 +1,4 @@
+const ErrorUtils = require('../utils/error-utils')
 module.exports = (sequelize, DataTypes) => {
   var Activity = sequelize.define('Activity', {
     datetime: DataTypes.DATE,
@@ -6,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     validate: {
       hasPortions() {
         if (this.Portions.length < 1) {
-          throw new Error('You must include at least one portion with each activity.')
+          throw ErrorUtils.createValidationError('You must include at least one portion with each activity.')
         }
       },
     },
